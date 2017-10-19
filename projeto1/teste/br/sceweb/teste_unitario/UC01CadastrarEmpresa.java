@@ -14,7 +14,7 @@ import br.sceweb.servico.ConfiguraDB;
 /**
  * Este script de teste verifica o comportamento do caso de uso UC01CadastrarEmpresa
  * @author professor
- *
+ * @version 1.0
  */
 public class UC01CadastrarEmpresa {
 	static EmpresaDAO empresaDAO;
@@ -43,6 +43,7 @@ public class UC01CadastrarEmpresa {
 	 */
 	@Test
 	public void CT01UC01FBCadastra_com_sucesso() {
+		String url = "jdbc:mysql://localhost/sceweb";
 		assertEquals(1,empresaDAO.adiciona(empresa));
 	}
 	
@@ -55,6 +56,26 @@ public class UC01CadastrarEmpresa {
 		empresaDAO.adiciona(empresa);
 		assertEquals(0,empresaDAO.adiciona(empresa));
 	}
+	
+	@Test
+	public void CT04UC01FBCadastra_db_invalido() {
+		String url = "jdbc:mysql://localhost/sceweb1";
+		String driver = "com.mysql.jdbc.Driver";
+		String usuario = "root";
+		String senha = "";
+		//configuraDB1 = new ConfiguraDB(url, driver,usuario,senha);
+		empresaDAO = new EmpresaDAO(configuraDB);
+		empresa = new Empresa();
+		empresa.setNomeDaEmpresa("empresa x");
+		empresa.setCnpj("89424232000180");
+		empresa.setNomeFantasia("empresa x");
+		empresa.setEndereco("rua taquari");
+		empresa.setTelefone("2222");
+		
+		empresaDAO.adiciona(empresa);
+		
+	}
+	
 	@After
 	public void tearDownAfterClass() throws Exception {
 		empresaDAO.exclui("89424232000180");
